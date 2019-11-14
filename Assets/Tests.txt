@@ -1,0 +1,157 @@
+ChildComponent:
+1. in child
+2. own
+3. skip itself
+4. offset 1 (parent/root)
+5. preload scene
+6. additive scene
+7. not found - create new
+8. not found - optional
+9. interface
+10. interface not found
+
+Component:
+1. sibling
+2. [ComponentReference]
+3. own & child
+4. parent
+5. sibling's child (before parent)
+6. additive scene
+7. singleton
+8. not found - create new
+9. scene root
+10. not found - optional
+
+FamilyComponent:
+1. parent
+2. generationsBackwards999
+3. of GameObject
+4. of field
+5. skip itself
+6. skip itself but not children
+7. skip itself in roots
+8. not found - create new
+9. additive (delayed) scene
+10. preload (DontDestroyOnLoad) scene
+11. fromRoot = true
+12. fromRoot = true + offsetFromTop
+13. not found - optional
+14. offset999
+15. complicated with offsets, SkipItself = true
+16. complicated with offsets, SkipItself = false
+17. skip -offset, 2 generations from startpoint(/offset)
+
+GlobalComponent:
+1. singleton (preload)
+2. additive scene root
+3. delayed singleton
+4. Of=
+5. create singleton
+6. not found - create new
+7. delayed root vs delayed deep
+8. not found - optional
+
+SiblingComponent:
+1. own
+2. root own
+3. root sibling - SkipItself
+4. sibling - SkipItself
+5. delayed scene root sibling
+6. not found - create one
+7. not found - optional
+
+OwnComponent:
+1. own
+2. Of = same name for multiple gameobjects
+3. preload scene root
+4. additive scene root
+5. preload scene child 
+6. additive scene child
+7. not found - create new
+8. not found - optional
+
+ParentComponent:
+1. own & parent
+2. skip itself
+3. not found - create new in startPoint
+4. not found - create in new go
+5. not found - optional
+6. combo with [ChildComponent]
+
+ReferenceComponent:
+1. Of = field name
+2. Of = gameobject name
+3. Of = null
+4. Of = same name for multiple gameobjects
+5. not found - create new - [ComponentReference(Of=null)]
+6. not found - create new at startPoint 
+7. not found - create in new go (startPoint==null)
+8. deep search
+9. not found - optional (Of = null)
+10. Of = non-existing gameobject name - not found - optional
+
+FindGameObject:
+1. child, own, sibling, parent, root (OwnTest2 + ReferenceTest4)
+2. preload scene root (OwnTest3)
+3. additive scene root (OwnTest4)
+4. preload scene child (OwnTest5)
+5. additive scene child & -99 Offset (OwnTest6)
+6. nowhere - create new one (OwnTest7)
+7. not found - optional (ReferenceTest10)
+
+GameObject dependency tests:
+
+Parent:
+1. parent (by startpoint) (Transform)
+2. by name
+3. root (by startpoint offset)
+4. not found - create new (by startpoint)
+5. not found - create new (by name)
+6. not found - don't create (by startpoint - offset too far)
+7. by coliding name
+8. not found by name - optional
+9. combo with [Child]
+
+Child:
+1. child (by startpoint)
+2. child (by name) (Transform)
+3. null startpoint - find in roots by name + additive scene
+4. not found by childindex (startpoint) - create new
+5. not found by name - create new
+6. by coliding name
+7. not found by childindex (startpoint) - optional
+8. Of = [ReferencePoint]
+
+Sibling:
+1. sibling (same parent) (by startpoint)
+2. root sibling (of additive scene) (by startpoint)
+3. out of (sibling/root) index - create new (Transform)
+4. sibling of ddol
+5. sibling of ddol not found - create new
+6. sibling by name
+7. root sibling by name + additive
+8. not found by name - create new
+9. itself by coliding name
+10. not found by sibling index (of scene) - optional
+
+Reference:
+1. reference (same scene)
+2. additive scene (Transform)
+3. not found - create new
+4. self by coliding name
+5. not found - optional
+
+Root:
+1. root
+2. offset from top
+3. offset from top last/deepest go
+4. root by name
+5. root sibling by name + additive scene
+6. root offset from top sibling
+7. go along hierarchy
+8. offset999
+9. offset from top deeper than startpoint - sibling (Transform)
+10. go up hierarchy
+11. not found root by name - create new in scene of startpoint
+12. not found with offset from top - create new
+13. not found by name - optional (Transform)
