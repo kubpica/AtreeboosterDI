@@ -17,10 +17,10 @@ Intuitivly manage dependencies of your MonoBehaviours with simple but powerfull 
 [Root] - Gets own root GameObject or finds one by name if specified.  
   
 Named parameters:  
- string Of - Name of a GameObject to find and apply the attribute's algorythm to. If there are multiple GameObjects with the same name, it finds the closest one in the hierarchy.  
- int Offset - Offset in hierarchy from "Of" GameObject.  
- bool Optional - If false, new component/gameobject is created when it's not found; otherwise just warning is displayed and dependency is not injected.  
- bool SkipItself - If true, own GameObject is skiped; otherwise included in search for the component.  
+ - string Of - Name of a GameObject to find and apply the attribute's algorythm to. If there are multiple GameObjects with the same name, it finds the closest one in the hierarchy.  
+ - int Offset - Offset in hierarchy from "Of" GameObject.  
+ - bool Optional - If false, new component/gameobject is created when it's not found; otherwise just warning is displayed and dependency is not injected.  
+ - bool SkipItself - If true, own GameObject is skiped; otherwise included in search for the component.  
   
 It works with multiple scenes loaded and DDOL objects.  
 It also provides MonoBehaviourSingleton allowing you to access the script from anywhere like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
