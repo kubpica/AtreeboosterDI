@@ -879,14 +879,22 @@ public class MonoBehaviourExtended : MonoBehaviour
 
     private class ToSkip : MonoBehaviour { }
 
+    private bool HasToSkip(Transform t)
+    {
+        if (t.GetComponent<ToSkip>() == null)
+            return false;
+        else
+            return true;
+    }
+
     private object FindComponentInChildren(Transform parent, MethodInfo method)
-    {   
+    {
         // Top search
         for (int i = 0; i < parent.childCount; i++)
         {
             var child = parent.GetChild(i);
 
-            if(!child.TryGetComponent(out ToSkip _))
+            if (!HasToSkip(child))
             {
                 var target = method.Invoke(child, new Type[0]);
                 if (target != null)
@@ -899,7 +907,7 @@ public class MonoBehaviourExtended : MonoBehaviour
         {
             var child = parent.GetChild(i);
 
-            if (!child.TryGetComponent(out ToSkip _))
+            if (!HasToSkip(child))
             {
                 var result = FindComponentInChildren(child, method);
                 if (result != null)
@@ -911,7 +919,7 @@ public class MonoBehaviourExtended : MonoBehaviour
 
     private object FindComponentIn(Transform parent, MethodInfo method)
     {
-        if (parent.TryGetComponent(out ToSkip _))
+        if (HasToSkip(parent))
             return null;
 
         var target = method.Invoke(parent, new Type[0]);

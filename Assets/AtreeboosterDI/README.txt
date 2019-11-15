@@ -28,5 +28,6 @@ Named parameters:
 > bool SkipItself - If true, own GameObject is skiped; otherwise included in search for the component.
 
 For more info read XML comments in MonoBehaviourExtended ;)
+For more examples visit https://github.com/kubpica/AtreeboosterDI
 GLHF and rate it on asset store! :) 
 Jakub "kubpica" Pranica, kubpicapf@gmail.com
