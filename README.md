@@ -30,5 +30,7 @@ Derive from MonoBehaviourExtended instead of MonoBehaviour. It provides the hier
 If you want to use Awake() in your script, hide the method (with new keyword) and call base.Awake();  
   
 If you want your script to be Singleton derive from MonoBehaviourSingleton<T> like this:  
+ ```c#
 public class SoundManager : MonoBehaviourSingleton<SoundManager> {}  
+ ```
 Place it anywhere in the scene and then you can access it from any script like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
