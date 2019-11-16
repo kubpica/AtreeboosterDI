@@ -26,6 +26,8 @@ It works with multiple scenes loaded and DDOL objects.
 It also provides MonoBehaviourSingleton allowing you to access the script from anywhere like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
   
 # Usage
+Copy MonoBehaviourExtended.cs and MonoBehaviourSingleton.cs to your project from https://github.com/kubpica/AtreeboosterDI/tree/master/Assets/AtreeboosterDI
+
 Derive from MonoBehaviourExtended instead of MonoBehaviour. It provides the hierarchy based dependency injection attributes.  
 If you want to use Awake() in your script, hide the method (with new keyword) and call base.Awake();  
   
