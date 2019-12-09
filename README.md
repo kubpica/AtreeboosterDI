@@ -24,7 +24,7 @@ Named parameters:
   
 It works with multiple scenes loaded and DDOL objects.  
 It also provides MonoBehaviourSingleton allowing you to access the script from anywhere like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
-  
+
 # Usage
 Copy MonoBehaviourExtended.cs and MonoBehaviourSingleton.cs to your project from https://github.com/kubpica/AtreeboosterDI/tree/master/Assets/AtreeboosterDI
 
@@ -36,3 +36,6 @@ If you want your script to be Singleton derive from MonoBehaviourSingleton<T> li
 public class SoundManager : MonoBehaviourSingleton<SoundManager> {}  
  ```
 Place it anywhere in the scene and then you can access it from any script like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
+
+# Unity Asset Store version
+https://assetstore.unity.com/packages/tools/integration/dependencyattributes-atreebooster-di-157631
