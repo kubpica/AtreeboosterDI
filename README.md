@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviourSingleton<SoundManager> {}
 Place it anywhere in the scene and then you can access it from any script like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
 
 # Licence
-Do what you want but within reason. Credit or review on Unity Asset Store would be nice, but not really required. If in doubt, contact me or use it as BSD-3.
+MIT but credit or review on Unity Asset Store would be nice ;)
 
 # Unity Asset Store version
 https://assetstore.unity.com/packages/tools/integration/dependencyattributes-atreebooster-di-157631
