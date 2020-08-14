@@ -1,0 +1,4 @@
+The In-game Debug Console asset by Süleyman Yasir Kula 
+was used to test the tool runtime on android&windows build.
+
+https://assetstore.unity.com/packages/tools/gui/in-game-debug-console-68068

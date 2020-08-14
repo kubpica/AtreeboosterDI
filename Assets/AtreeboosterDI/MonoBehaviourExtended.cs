@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Derive from this instead of <c>MonoBehaviour</c>. If you want to use Awake() in your script, hide the method (with new keyword) and call <c>base.Awake();</c>
+/// Derive from this instead of <c>MonoBehaviour</c>. If you want to use Awake() in your script, hide the method (with the <c>new</c> keyword) and call <c>base.Awake();</c>
 /// It provides the hierarchy based dependency injection attributes.
 /// </summary>
 /// <example>
@@ -1145,7 +1145,6 @@ public class MonoBehaviourExtended : MonoBehaviour
                     // Get the object to skip out of family for a while
                     var preParent = prePoint.parent;
                     var siblingIndex = prePoint.GetSiblingIndex();
-                    Debug.Log("setparent " + prePoint.gameObject + " " + prePoint.position);
                     prePoint.SetParent(null);
 
                     // Search in family
@@ -1158,7 +1157,6 @@ public class MonoBehaviourExtended : MonoBehaviour
 
                     // Restore the object to the family
                     prePoint.SetParent(preParent);
-                    Debug.Log("setparent " + prePoint.gameObject + " " + prePoint.position);
                     prePoint.SetSiblingIndex(siblingIndex);
                 }
                 else
@@ -1795,7 +1793,7 @@ public class MonoBehaviourExtended : MonoBehaviour
     }
 
     /// <summary>
-    /// If you want to use Awake() in your script, overload this (with new keyword) and call <c>base.Awake();</c>
+    /// If you want to use Awake() in your script, overload this (with the <c>new</c> keyword) and call <c>base.Awake();</c>
     /// </summary>
     protected void Awake()
     {
@@ -1813,6 +1811,9 @@ public class MonoBehaviourExtended : MonoBehaviour
             }
             foreach (GameObjectDependencyAttribute a in attributes)
             {
+                if (f.IsPublic && !f.IsNotSerialized)
+                    LogWarning("You tried to inject a public (serialized) GameObject! (" + f + " in " + this + ") It should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected.");
+
                 if (f.GetValue(this) != null)
                     break;
 

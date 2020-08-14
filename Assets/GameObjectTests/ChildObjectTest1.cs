@@ -1,9 +1,12 @@
-﻿using UnityEngine;
+﻿using System;
+using UnityEngine;
 
 public class ChildObjectTest1 : MonoBehaviourExtended, ITest
 {
     [Child(1)]
-    private GameObject go;
+    [NonSerialized]
+    public GameObject go;
+
     private void Start()
     {
         if (!Test())
