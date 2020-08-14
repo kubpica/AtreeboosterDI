@@ -23,6 +23,8 @@ public class FamilyTest6 : MonoBehaviourExtended, ITest
             {
                 return true;
             }
+            if (transform.position.z != -10)
+                Debug.LogError("Position of the gameobject changed!");
         }
         return false;
     }

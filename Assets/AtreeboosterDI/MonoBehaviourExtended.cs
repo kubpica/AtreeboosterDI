@@ -6,7 +6,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 
 /// <summary>
-/// Derive from this instead of <c>MonoBehaviour</c>. If you want to use Awake() in your script, hide the method (with new keyword) and call <c>base.Awake();</c>
+/// Derive from this instead of <c>MonoBehaviour</c>. If you want to use Awake() in your script, hide the method (with the <c>new</c> keyword) and call <c>base.Awake();</c>
 /// It provides the hierarchy based dependency injection attributes.
 /// </summary>
 /// <example>
@@ -888,13 +888,13 @@ public class MonoBehaviourExtended : MonoBehaviour
     }
 
     private object FindComponentInChildren(Transform parent, MethodInfo method)
-    {
+    {   
         // Top search
         for (int i = 0; i < parent.childCount; i++)
         {
             var child = parent.GetChild(i);
 
-            if (!HasToSkip(child))
+            if(!HasToSkip(child))
             {
                 var target = method.Invoke(child, new Type[0]);
                 if (target != null)
@@ -1005,7 +1005,7 @@ public class MonoBehaviourExtended : MonoBehaviour
             // Move object to skip to the top of the hierarchy for a while
             preParent = startPoint.transform.parent;
             siblingIndex = startPoint.transform.GetSiblingIndex();
-            startPoint.transform.parent = null;
+            startPoint.transform.SetParent(null);
         }
 
         isDelayed = false;
@@ -1048,7 +1048,7 @@ public class MonoBehaviourExtended : MonoBehaviour
         if (skip && startPoint != null)
         {
             // Restore the object's original position
-            startPoint.transform.parent = preParent;
+            startPoint.transform.SetParent(preParent);
             startPoint.transform.SetSiblingIndex(siblingIndex);
         }
 
@@ -1082,18 +1082,25 @@ public class MonoBehaviourExtended : MonoBehaviour
 
     private object GetSingletonComponent(FieldInfo f, out bool isDelayed)
     {
-        var fieldType = f.FieldType;
-        var singletonType = typeof(MonoBehaviourSingleton<>).MakeGenericType(fieldType);
         isDelayed = false;
-        if (fieldType.IsSubclassOf(singletonType))
-        {
-            var component = singletonType.GetProperty("Instance").GetValue(null);
-            if (component == null) // It can be null only if some scene is still loading...
+        try 
+        { 
+            var fieldType = f.FieldType;
+            var singletonType = typeof(MonoBehaviourSingleton<>).MakeGenericType(fieldType);
+            if (fieldType.IsSubclassOf(singletonType))
             {
-                StartCoroutine(InitDelayedSingleton(singletonType, f)); //so wait for scenes to load and then init the field.
-                isDelayed = true;
+                var component = singletonType.GetProperty("Instance").GetValue(null);
+                if (component == null) // It can be null only if some scene is still loading...
+                {
+                    StartCoroutine(InitDelayedSingleton(singletonType, f)); //so wait for scenes to load and then init the field.
+                    isDelayed = true;
+                }
+                return component;
             }
-            return component;
+        }
+        catch
+        {
+            return null;
         }
         return null;
     }
@@ -1138,10 +1145,10 @@ public class MonoBehaviourExtended : MonoBehaviour
                     // Get the object to skip out of family for a while
                     var preParent = prePoint.parent;
                     var siblingIndex = prePoint.GetSiblingIndex();
-                    prePoint.parent = null;
+                    prePoint.SetParent(null);
 
                     // Search in family
-                    if(startPoint != prePoint)
+                    if (startPoint != prePoint)
                         component = deepMethod.Invoke(startPoint, new Type[0]);
 
                     // Search in children of skiped object
@@ -1149,7 +1156,7 @@ public class MonoBehaviourExtended : MonoBehaviour
                         component = GetComponentOnlyInChildren(prePoint, deepMethod);
 
                     // Restore the object to the family
-                    prePoint.parent = preParent;
+                    prePoint.SetParent(preParent);
                     prePoint.SetSiblingIndex(siblingIndex);
                 }
                 else
@@ -1220,13 +1227,13 @@ public class MonoBehaviourExtended : MonoBehaviour
                 {
                     // Get the object to skip out of family for a while
                     var siblingIndex = startPoint.GetSiblingIndex();
-                    startPoint.parent = null;
+                    startPoint.SetParent(null);
 
                     // Search in siblings
                     component = GetComponentOnlyInChildren(parent, method);
 
                     // Restore the object to the family
-                    startPoint.parent = parent;
+                    startPoint.SetParent(parent);
                     startPoint.SetSiblingIndex(siblingIndex);
                 }
                 else
@@ -1664,19 +1671,19 @@ public class MonoBehaviourExtended : MonoBehaviour
 
         if (a is ParentAttribute)
         {
-            target.parent = startPoint.parent;
-            startPoint.parent = target;
+            target.SetParent(startPoint.parent);
+            startPoint.SetParent(target);
         }
         else if (a is ChildAttribute ca)
         {
             int children = startPoint.childCount;
             while (children < ca.Index)
             {
-                new GameObject("Child" + (children+1)).transform.parent = startPoint;
+                new GameObject("Child" + (children+1)).transform.SetParent(startPoint);
                 children++;
             }
                     
-            target.parent = startPoint;
+            target.SetParent(startPoint);
             if (ca.Index >= 0)
                 target.SetSiblingIndex(ca.Index);
         }
@@ -1687,13 +1694,13 @@ public class MonoBehaviourExtended : MonoBehaviour
             while (children < sa.Index)
             {
                 var sibling = new GameObject("Sibling" + (children+1)).transform;
-                sibling.parent = startPoint; // Sets scene... in case the parent was null
-                sibling.parent = parent;
+                sibling.SetParent(startPoint); // Sets scene... in case the parent was null
+                sibling.SetParent(parent);
                 children++;
             }
 
-            target.parent = startPoint; // Sets scene of target to be the same as of startPoint
-            target.parent = parent;
+            target.SetParent(startPoint); // Sets scene of target to be the same as of startPoint
+            target.SetParent(parent);
             if (sa.Index >= 0)
                 target.SetSiblingIndex(sa.Index);
         }
@@ -1713,12 +1720,12 @@ public class MonoBehaviourExtended : MonoBehaviour
                 toRoot -= Mathf.Abs(ra.FromTop);
                 root = GetOffsetTransform(root, toRoot);
 
-                target.parent = root.parent;
+                target.SetParent(root.parent);
             }
             else
             {
-                target.parent = startPoint;
-                target.parent = null;
+                target.SetParent(startPoint);
+                target.SetParent(null);
             }
         }
 
@@ -1743,7 +1750,7 @@ public class MonoBehaviourExtended : MonoBehaviour
             GameObject gm = new GameObject(fType.Name, fType);
             component = gm.GetComponent(fType);
 
-            gm.transform.parent = startPoint;
+            gm.transform.SetParent(startPoint);
         }
         else if (a is ParentComponentAttribute || a is GlobalComponentAttribute || a is OwnComponentAttribute || a is ComponentAttribute)
         {
@@ -1771,8 +1778,8 @@ public class MonoBehaviourExtended : MonoBehaviour
                     component = gm.GetComponent(fType);
 
                     // Set scene to be the same as this
-                    gm.transform.parent = transform; 
-                    gm.transform.parent = null;
+                    gm.transform.SetParent(transform); 
+                    gm.transform.SetParent(null);
                 }
             }
             else
@@ -1786,7 +1793,7 @@ public class MonoBehaviourExtended : MonoBehaviour
     }
 
     /// <summary>
-    /// If you want to use Awake() in your script, overload this (with new keyword) and call <c>base.Awake();</c>
+    /// If you want to use Awake() in your script, overload this (with the <c>new</c> keyword) and call <c>base.Awake();</c>
     /// </summary>
     protected void Awake()
     {
@@ -1804,6 +1811,9 @@ public class MonoBehaviourExtended : MonoBehaviour
             }
             foreach (GameObjectDependencyAttribute a in attributes)
             {
+                if (f.IsPublic && !f.IsNotSerialized)
+                    LogWarning("You tried to inject a public (serialized) GameObject! (" + f + " in " + this + ") It should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected.");
+
                 if (f.GetValue(this) != null)
                     break;
 
