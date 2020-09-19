@@ -38,7 +38,7 @@ public class SoundManager : MonoBehaviourSingleton<SoundManager> {}
 Place it anywhere in the scene and then you can access it from any script like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
 
 # Known issues and tips
- - If you try to inject a GameObject (or Unity's built in component - non-MonoBehaviour) it should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected.
+ - If you try to inject a GameObject (or Unity's built in component - non-MonoBehaviour) it should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected. MonoBehaviours can be public.
  - Using the [Component] attribute is convenient but you will probably get better performance if you use the more specific ones. You still can use it, just be carefull in extreme cases.
  - If you want to use the [GlobalComponent] attribute with non-MonoBehaviourSingleton<T> components it's better to put them in one of the root gameobjects; otherwise it may be expensive.
 
