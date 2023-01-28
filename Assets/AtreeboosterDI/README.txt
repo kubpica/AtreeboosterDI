@@ -7,16 +7,16 @@ Place it anywhere in the scene and then you can access it from any script like t
 
 Available dependency attributes: (in scripts deriving from MonoBehaviourExtended or MonoBehaviourSingleton<T>)
 [Component] - automatically finds the most likely component and injects the marked field with it.
-[GlobalComponent] - finds the singleton or traverses scene GameObjects looking for the component of the marked field.
-[ChildComponent] - finds the component in children.
-[ParentComponent] - finds the component in parents.
+[GlobalComponent] - finds the singleton or traverses scene GameObjects looking for the component of the marked field type.
+[ChildComponent] - finds the component in children (descendants).
+[ParentComponent] - finds the component in parents (predecessors).
 [SiblingComponent] - finds the component in siblings.
 [FamilyComponent] - searches for the component starting from parent down along the hierarchy.
 [FamilyComponent(true)] - find the component in own tree (form root down along the hierarchy).
-[OwnComponent] - looks for the component only in itself (own gameObject).
+[OwnComponent] - looks for the component only in itself (own GameObject).
 [ReferenceComponent] - looks for the component in GameObjects marked [ReferencePoint].
-[Child(name/index)] - Finds the GameObject by name in children or gets one by index.
-[Parent(name/index)] - Finds the GameObject by name in parents or gets one by index.
+[Child(name/index)] - Finds the GameObject by name in children (descendants) or gets one by index.
+[Parent(name/index)] - Finds the GameObject by name in parents (predecessors) or gets one by index.
 [Sibling(name/index)] - Finds the GameObject by name in siblings or gets one by index.
 [Reference(name)] - Finds closest in the hierarchy GameObject by name.
 [Root] - Gets own root GameObject or finds one by name if specified.
@@ -28,9 +28,10 @@ Named parameters:
 > bool SkipItself - If true, own GameObject is skiped; otherwise included in search for the component. (false by default)
 
 Known issues and tips:
-> If you try to inject a GameObject it should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected.
+> If you try to inject a GameObject (or Unity's built in component - non-MonoBehaviour) it should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected. MonoBehaviours can be public.
 > Using the [Component] attribute is convenient but you will probably get better performance if you use the more specific ones. You still can use it, just be carefull in extreme cases.
 > If you want to use the [GlobalComponent] attribute with non-MonoBehaviourSingleton<T> components it's better to put them in one of the root gameobjects; otherwise it may be expensive.
+> It uses reflection and searches the hierarchy runtime which can be expensive, so using this in components that are frequently spawned during gameplay can be problematic.
 
 For more info read XML comments in MonoBehaviourExtended ;)
 For more examples visit https://github.com/kubpica/AtreeboosterDI
