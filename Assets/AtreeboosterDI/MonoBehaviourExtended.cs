@@ -1866,7 +1866,7 @@ public class MonoBehaviourExtended : MonoBehaviour
             }
             foreach (ComponentDependencyAttribute a in attributes)
             {
-                if (f.IsPublic && !f.IsNotSerialized)
+                if (f.IsPublic && !f.IsNotSerialized && !f.FieldType.IsSubclassOf(typeof(MonoBehaviour)))
                     Debug.LogError("You tried to inject a public (serialized) non-MonoBehaviour (Unity's built-in component!) (" + f + " in " + this + ") " +
                         "It should be private or marked with [NonSerialized], otherwise it may conflict with the Unity serializer and the dependency may not be injected.");
 
