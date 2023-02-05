@@ -23,7 +23,9 @@ Named parameters:
  - bool SkipItself - If true, own GameObject is skiped; otherwise included in search for the component. (false by default)
   
 It works with multiple scenes loaded and DDOL objects.  
-It also provides MonoBehaviourSingleton allowing you to access the script from anywhere like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;  
+It also provides MonoBehaviourSingleton allowing you to access the script from anywhere like this: SoundManager.Instance; or [GlobalComponent] SoundManager soundManager;
+
+[[ReferenceComponent] example and discussion about the tool](https://forum.unity.com/threads/dependencyattributes-atreebooster-di.974097/#post-8783116)
 
 # Usage
 Copy MonoBehaviourExtended.cs and MonoBehaviourSingleton.cs to your project from https://github.com/kubpica/AtreeboosterDI/tree/master/Assets/AtreeboosterDI
