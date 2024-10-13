@@ -47,7 +47,8 @@ Place it anywhere in the scene and then you can access it from any script like t
 
 # Licence
 MIT but credit or review on Unity Asset Store would be nice ;)
-Do you like my work? Check my games on Steam! ;) https://store.steampowered.com/search/?developer=Polish%20Hacker
+
+Do you like my work? Check my games on Steam! https://store.steampowered.com/search/?developer=Polish%20Hacker
 
 # Unity Asset Store version
 https://assetstore.unity.com/packages/tools/integration/dependencyattributes-atreebooster-di-157631
